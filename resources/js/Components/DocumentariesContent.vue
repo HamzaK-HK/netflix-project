@@ -13,7 +13,7 @@ const currentVideo = ref(null);
 
 onMounted(async () => {
   try {
-    const response = await axios.get("/api/movies");
+    const response = await axios.get("/api/documentaries");
     console.log(response, "Response");
 
     // Add an additional property to determine if a video should show an image

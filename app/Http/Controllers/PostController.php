@@ -35,7 +35,7 @@ class PostController extends Controller
             'release_date' => 'required|date',
             'description' => 'required|string',
             'file' => 'required|file',
-            'category_id' => 'required', // Add max length if applicable
+            'category_id' => 'nullable|exists:categories,id', // Add max length if applicable
         ]);
 
         // Handle file upload

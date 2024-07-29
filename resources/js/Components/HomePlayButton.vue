@@ -54,7 +54,7 @@ defineProps({
         </div>
 
 
-        <div class="absolute bottom-2 left-14 flex gap-2 items-end group">
+        <div class="absolute bottom-4 left-14 flex gap-2 items-end group">
             <button @click="showOverlay = true">
                 <h1 class="text-xl font-bold text-gray-200">Your Next Watch</h1>
             </button>

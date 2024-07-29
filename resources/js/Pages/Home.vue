@@ -18,12 +18,13 @@ import HomeContent from "@/Components/HomeContent.vue";
             <HomePlayButton />
 
         </HomeVideos>
-        <div class="bg-[#141414]  absolute">
+        <div class="bg-[#141414] w-full">
             <HomeContent
             />
         </div>
     </div>
 </template>
+
 
 <!-- <AuthenticatedLayout>
     <template #header>

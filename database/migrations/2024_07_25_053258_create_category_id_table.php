@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('posts', function (Blueprint $table) {
             // Add the category_id column
-            $table->unsignedBigInteger('category_id')->after('user_id');
+            $table->unsignedBigInteger('category_id')->nullable()->after('user_id');
 
             // Add foreign key constraint
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');

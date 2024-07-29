@@ -6,11 +6,12 @@ import VolumeHigh from "vue-material-design-icons/VolumeHigh.vue";
 import VolumeMute from "vue-material-design-icons/VolumeMute.vue";
 
 const videos = ref([]); // Store video data
-const currentVideoIndex = ref(0); // Track the currently playing video
+// const currentVideoIndex = ref(0); // Track the currently playing video
+
 
 onMounted(async () => {
     try {
-        const response = await axios.get("/movies");
+        const response = await axios.get("/api/movies");
         console.log(response.data, "Response");
         videos.value = response.data;
 
@@ -21,6 +22,8 @@ onMounted(async () => {
         console.log("Failed to fetch videos", error);
     }
 });
+
+
 
 // Function to play the current video
 const playCurrentVideo = () => {

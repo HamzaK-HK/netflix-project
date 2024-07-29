@@ -7,6 +7,7 @@ import Admin from '../Pages/Admin.vue' // Adjust the path as needed
 import Movies from '../Pages/Movies.vue' // Adjust the path as needed
 import TVShows from '../Pages/TVShows.vue' // Adjust the path as needed
 import Welcome from '../Pages/Welcome.vue'
+import MyList from '../Pages/MyList.vue';
 // import Login from '../Pages/Auth/Login.vue'
 // import Register from '../Pages/Auth/Register.vue'
 
@@ -43,10 +44,20 @@ const routes = [
     component: Movies,
   },
   {
-    path: '/tv-shows',
+    path: '/tvshows',
     name: 'TVShows',
     component: TVShows,
+  },
+  {
+    path: '/mylist',
+    name: 'MyList',
+    component: MyList,
   }
+//   {
+//     path: '/account',
+//     name: 'Account',
+//     component: Account,
+//   }
 //   {
 //     path: '/about',
 //     name: 'About',

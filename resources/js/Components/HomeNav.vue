@@ -101,12 +101,12 @@ defineProps({
                         /></NavLink>
                     </li>
                     <li>
-                        <NavLink  :active="true">Home</NavLink>
+                        <NavLink  :active="true" to="/home">Home</NavLink>
                     </li>
-                    <li><NavLink>TV Shows</NavLink></li>
-                    <li><NavLink >Movies</NavLink></li>
+                    <li><NavLink to="/tvshows">TV Shows</NavLink></li>
+                    <li><NavLink to="/movies">Movies</NavLink></li>
                     <li><NavLink >New & Popular</NavLink></li>
-                    <li><NavLink >My List</NavLink></li>
+                    <li><NavLink to="/mylist">My List</NavLink></li>
                     <li>
                         <NavLink >Browse by Languages</NavLink>
                     </li>
@@ -249,7 +249,7 @@ defineProps({
         <div  id="bottomNav" class="fixed bottom-0 z-50 w-full   items-center justify-between bg-black bg-opacity-90 md:hidden ">
             <ul class="flex justify-around items-center ">
                     <li>
-                        <NavLink class="flex flex-col"  :active="true"><HomeOutline :size="28" fillColor="#ffffff" class="cursor-pointer" />Home</NavLink>
+                        <NavLink class="flex flex-col"  :active="true" to="/home"><HomeOutline :size="28" fillColor="#ffffff" class="cursor-pointer" />Home</NavLink>
 
                     </li>
                     <li><NavLink class="flex flex-col" ><PlayBoxMultipleOutline :size="28" fillColor="#ffffff" class="" />New & Popular</NavLink></li>

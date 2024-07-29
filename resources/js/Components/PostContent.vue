@@ -42,13 +42,13 @@ const submit = async () => {
         formData.append("file", file.value); // Add the file to FormData
 
         // Send the formData using Axios
-        const response = await axios.post("/posts", formData, {
+        const response = await axios.post("/api/posts", formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
         });
 
-        console.log("Post added successfully", response.data);
+        console.log("Post added successfully");
     } catch (error) {
         console.error("Error adding post:", error.response.data);
     }
@@ -56,20 +56,15 @@ const submit = async () => {
 
 const categories = ref([]);
 
-const fetchCategories = () => {
-  axios
-    .get("/getcategory", {
-      headers: {
-        Accept: "application/json",
-      },
-    })
-    .then((response) => {
-      categories.value = response.data.categories;
-      console.log("Categories fetched successfully:");
-    })
-    .catch((error) => {
-      console.error("Error fetching categories:", error);
-    });
+const fetchCategories = async () => {
+
+    try {
+        const response = await axios.get("/api/getcategory");
+        categories.value = response.data.categories;
+        console.log("Categories fetched successfully:");
+    } catch (error) {
+        console.error("Error fetching categories:", error);
+    }
 };
 
 onMounted(() => {

@@ -13,8 +13,10 @@ const currentVideo = ref(null);
 
 onMounted(async () => {
   try {
-    const response = await axios.get("/api/movies");
-    console.log(response, "Response");
+    const response = await axios.get("/api/getmylist", {
+
+    });
+    console.log(response, "vide fetched successfully");
 
     // Add an additional property to determine if a video should show an image
     videos.value = response.data.map((video) => ({

@@ -21,4 +21,11 @@ class Post extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function mylist()
+    {
+        return $this->belongsTo(MyList::class);
+    }
+
+    
+
 }

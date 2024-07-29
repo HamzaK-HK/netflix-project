@@ -11,7 +11,7 @@ const videos = ref([]); // Store video data
 
 onMounted(async () => {
     try {
-        const response = await axios.get("/api/movies");
+        const response = await axios.get("/api/tvshows");
         console.log(response.data, "Response");
         videos.value = response.data;
 

@@ -4,22 +4,22 @@ import HomeNav from '@/Components/HomeNav.vue';
 import HomeVideos from '@/Components/HomeVideos.vue';
 import HomePlayButton from '@/Components/HomePlayButton.vue';
 import HomeContent from '@/Components/HomeContent.vue';
+import MovieVideos from '../Components/MovieVideos.vue';
+import MoviesContent from '../Components/MoviesContent.vue';
 
 
 </script>
 
 
 <template>
-    <div>
-        <Head title="Movies" />
-        <HomeVideos class="bg-black bg-opacity-30 w-full h-screen">
-                <HomeNav />
-                <HomePlayButton />
-        </HomeVideos>
-        <div class="bg-[#141414]  absolute">
-            <HomeContent
+       <div>
+        <MovieVideos class="bg-black bg-opacity-30 w-full h-screen">
+            <HomeNav />
+            <HomePlayButton />
 
-            />
+        </MovieVideos>
+        <div class="bg-[#141414] w-full h-screen ">
+            <MoviesContent />
         </div>
     </div>
 </template>
