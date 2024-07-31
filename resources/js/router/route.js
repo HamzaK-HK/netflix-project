@@ -10,6 +10,8 @@ import Welcome from '../Pages/Welcome.vue'
 import MyList from '../Pages/MyList.vue';
 // import Login from '../Pages/Auth/Login.vue'
 // import Register from '../Pages/Auth/Register.vue'
+import Account from '../Pages/Account.vue'
+import Plans from '../Pages/Plans.vue'
 
 
 const routes = [
@@ -52,12 +54,17 @@ const routes = [
     path: '/mylist',
     name: 'MyList',
     component: MyList,
+  },
+  {
+    path: '/account',
+    name: 'Account',
+    component: Account,
+  },
+  {
+    path: '/plans',
+    name: 'Plans',
+    component: Plans,
   }
-//   {
-//     path: '/account',
-//     name: 'Account',
-//     component: Account,
-//   }
 //   {
 //     path: '/about',
 //     name: 'About',

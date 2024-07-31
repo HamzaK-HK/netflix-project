@@ -101,9 +101,9 @@ defineProps({
                         /></NavLink>
                     </li>
                     <li>
-                        <NavLink  :active="true" to="/home">Home</NavLink>
+                        <NavLink   to="/home">Home</NavLink>
                     </li>
-                    <li><NavLink to="/tvshows">TV Shows</NavLink></li>
+                    <li><NavLink to="/tvshows" >TV Shows</NavLink></li>
                     <li><NavLink to="/movies">Movies</NavLink></li>
                     <li><NavLink >New & Popular</NavLink></li>
                     <li><NavLink to="/mylist">My List</NavLink></li>

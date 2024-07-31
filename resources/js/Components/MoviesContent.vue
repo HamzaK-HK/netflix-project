@@ -92,7 +92,7 @@ const closeModal = () => {
       <div class="absolute inset-0 top-2 right-10 mb-4">
         <video
           v-if="currentVideo"
-          class="w-full mx-auto h-screen block"
+          class="w-64 h-36 rounded-sm cursor-pointer"
           controls
           autoplay
         >

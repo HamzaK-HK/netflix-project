@@ -53,4 +53,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(MyList::class);
     }
+
+
+    public function plan()
+    {
+        return $this->belongsTo(Plan::class);
+    }
 }

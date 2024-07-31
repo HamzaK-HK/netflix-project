@@ -16,7 +16,7 @@ import HomeContent from "@/Components/HomeContent.vue";
                 <HomeNav />
                 <HomePlayButton />
         </HomeVideos>
-        <div class="bg-[#141414]  absolute">
+        <div class="bg-[#141414]  w-full">
             <HomeContent
 
             />

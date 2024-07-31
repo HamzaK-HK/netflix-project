@@ -9,7 +9,7 @@
         <title>Netflix</title>
         <!-- The 'icons' attribute is not valid for <link> tags, so it should be removed or corrected if it's meant to link to an icon -->
         <!-- Example: <link rel="icon" href="/n-logo.png" type="image/png"> -->
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />

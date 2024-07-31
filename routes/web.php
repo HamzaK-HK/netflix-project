@@ -45,6 +45,10 @@ Route::post('/api/mylist', [MyListController::class, 'store'])->name('mylist.sto
 Route::get('/api/getmylist', [MyListController::class, 'getmylist'])->name('getmylist');
 
 
+// post plan
+Route::post('/')
+
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
