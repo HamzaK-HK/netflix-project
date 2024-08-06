@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Plan extends Model
+class Stripe extends Model
 {
     use HasFactory;
 
@@ -16,13 +16,8 @@ class Plan extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function stripe()
+    public function plan()
     {
-        return $this->hasMany(Stripe::class);
-    }
-
-    public function payment()
-    {
-        return $this->hasMany(Payment::class);
+        return $this->belongsTo(Plan::class);
     }
 }

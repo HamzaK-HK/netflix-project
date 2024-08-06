@@ -6,7 +6,7 @@ import MenuDown from "vue-material-design-icons/MenuDown.vue";
 import MenuUp from "vue-material-design-icons/MenuUp.vue";
 import BellOutline from "vue-material-design-icons/BellOutline.vue";
 import BellOffOutline from "vue-material-design-icons/BellOffOutline.vue";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import HomeOutline from "vue-material-design-icons/HomeOutline.vue";
 import PlayBoxMultipleOutline from "vue-material-design-icons/PlayBoxMultipleOutline.vue";
 import AccountBoxOutline from "vue-material-design-icons/AccountBoxOutline.vue";
@@ -19,6 +19,7 @@ import ChevronRight from "vue-material-design-icons/ChevronRight.vue";
 import Check from "vue-material-design-icons/Check.vue";
 import Link from "@/Components/Link.vue";
 import PostPlans from "../Components/PostPlans.vue";
+import router from "../router/route";
 
 
 const isScrolled = ref(false);
@@ -34,6 +35,41 @@ const emit = defineEmits(["close"]);
 const toggleAcc = () => {
     acc.value = !acc.value
 }
+
+
+const plans = ref([]);
+
+// Method to get the background class based on plan type
+const planBackgrounds = {
+    'premium': 'bg-gradient-to-br from-[#3B409F] via-[#3F41A4] to-[#eb0606]',
+    'standard': 'bg-gradient-to-br from-[#3B409F] via-[#3F41A4] to-[#1f143d]',
+    'basic': 'bg-gradient-to-br from-[#3B409F] via-[#3F41A4] to-[#492b95]',
+    'mobile': 'bg-gradient-to-br from-[#3B409F] via-[#3F41A4] to-[#855AEE]',
+};
+
+const getPlanBackgroundClass = (planType) => {
+    return planBackgrounds[planType] || 'bg-gradient-to-br from-[#3B409F] via-[#3F41A4] to-[#eb0606]'; // Fallback color
+};
+
+// Fetch plans from API
+const getPlans = async () => {
+    try {
+        const response = await axios.get('/api/getplans');
+        plans.value = response.data.plans;
+    } catch (error) {
+        console.error('Failed to fetch plans', error);
+    }
+};
+
+// Call fetchPlans on component mount
+onMounted(() => {
+    getPlans();
+});
+
+const navigateToPlan = (planId) => {
+      router.push({ name: 'Stripe', params: { type: planId } });
+    }
+
 
 </script>
 
@@ -59,151 +95,46 @@ const toggleAcc = () => {
         <PostPlans v-if="showOverlay" @close="showOverlay = false" />
 
 
-       <div class="mt-4 ml-4 flex justify-center gap-2">
-        <div class="p-1 border  border-gray-400 rounded-md w-1/6 h-auto">
-            <!-- <h1 class="text-[20px] text-white bg-red-600">Most Popular</h1> -->
-            <div class=" bg-gradient-to-br from-[#3B409F] via-[#3F41A4] to-[#eb0606] text-white font-bold p-2 rounded-md w-full h-1/5">
-                <h1 class="text-[20px]">Premium</h1>
-                <h1 class="text-[16px] font-normal">4K + HDR</h1>
-                <!-- <input type="checkbox" class="" name="" id=""> -->
+        <div class="mt-4 ml-4 flex justify-center gap-2">
+        <div
+            v-for="plan in plans"
+            :key="plan.id"
+            class="p-1 border border-gray-400 rounded-md w-1/6 h-auto pb-8 cursor-pointer transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-2xl"
+            @click="navigateToPlan(plan.plan_type)"
+        >
+            <div :class="[getPlanBackgroundClass(plan.plan_type), 'text-white font-semibold p-2 rounded-md w-full h-1/5']">
+                <h1 class="text-[20px] uppercase">{{ plan.plan_type }}</h1>
+                <h1 class="text-[16px] font-normal">{{ plan.resolution }}</h1>
             </div>
             <div class="flex items-center gap-3 mt-4 border-b pb-2 border-gray-300 text-gray-500 font-semibold text-[16px]">
-                <Check :size="20" fillColor="#ffffff" class=" border rounded-full   border-transparent bg-gray-400" />
+                <Check :size="20" fillColor="#ffffff" class="border rounded-full border-transparent bg-gray-400" />
                 <div>
                     <h3>Monthly price</h3>
-                    <h1 class="text-gray-700">Rs1,100</h1>
+                    <h1 class="text-gray-700">{{ plan.monthly_price }}</h1>
                 </div>
             </div>
             <div class="flex items-center gap-3 mt-4 border-b pb-2 border-gray-300 text-gray-500 font-semibold text-[16px]">
-                <Check :size="20" fillColor="#ffffff" class=" border rounded-full   border-transparent bg-gray-400" />
+                <Check :size="20" fillColor="#ffffff" class="border rounded-full border-transparent bg-gray-400" />
                 <div>
                     <h3>Resolution</h3>
-                    <h1 class="text-gray-700">4K(Ultra HD) + HDR</h1>
+                    <h1 class="text-gray-700">{{ plan.resolution }}</h1>
                 </div>
             </div>
             <div class="flex items-center gap-3 mt-4 border-b pb-2 border-gray-300 text-gray-500 font-semibold text-[16px]">
-                <Check :size="20" fillColor="#ffffff" class=" border rounded-full   border-transparent bg-gray-400" />
+                <Check :size="20" fillColor="#ffffff" class="border rounded-full border-transparent bg-gray-400" />
                 <div>
                     <h3>Video quality</h3>
-                    <h1 class="text-gray-700">Best</h1>
+                    <h1 class="text-gray-700">{{ plan.video_quality }}</h1>
                 </div>
             </div>
-            <div class="flex items-center gap-3 mt-4  text-gray-500 font-semibold text-[16px]">
-                <Check :size="20" fillColor="#ffffff" class=" border rounded-full   border-transparent bg-gray-400" />
+            <div class="flex items-center gap-3 mt-4 text-gray-500 font-semibold text-[16px]">
+                <Check :size="20" fillColor="#ffffff" class="border rounded-full border-transparent bg-gray-400" />
                 <div>
                     <h3>Supported devices</h3>
-                    <h1 class="text-gray-700">Mobile phone, tablet, Tv, computer</h1>
+                    <h1 class="text-gray-700">{{ Array.isArray(plan.supported_devices) ? plan.supported_devices.join(", ") : plan.supported_devices }}</h1>
                 </div>
             </div>
         </div>
-        <div class="p-1 border border-gray-400 rounded-md w-1/6 h-[26rem]">
-            <div class=" bg-gradient-to-br from-[#3B409F] via-[#3F41A4] to-[#1f143d] text-white font-bold p-2 rounded-md w-full h-1/5">
-                <h1 class="text-[20px]">Standard</h1>
-                <h1 class="text-[16px] font-normal">1080p</h1>
-                <!-- <input type="checkbox" class="" name="" id=""> -->
-            </div>
-            <div class="flex items-center gap-3 mt-4 border-b pb-2 border-gray-300 text-gray-500 font-semibold text-[16px]">
-                <Check :size="20" fillColor="#ffffff" class=" border rounded-full   border-transparent bg-gray-400" />
-                <div>
-                    <h3>Monthly price</h3>
-                    <h1 class="text-gray-700">Rs800</h1>
-                </div>
-            </div>
-            <div class="flex items-center gap-3 mt-4 border-b pb-2 border-gray-300 text-gray-500 font-semibold text-[16px]">
-                <Check :size="20" fillColor="#ffffff" class=" border rounded-full   border-transparent bg-gray-400" />
-                <div>
-                    <h3>Resolution</h3>
-                    <h1 class="text-gray-700">1080 (Full HD)</h1>
-                </div>
-            </div>
-            <div class="flex items-center gap-3 mt-4 border-b pb-2 border-gray-300 text-gray-500 font-semibold text-[16px]">
-                <Check :size="20" fillColor="#ffffff" class=" border rounded-full   border-transparent bg-gray-400" />
-                <div>
-                    <h3>Video quality</h3>
-                    <h1 class="text-gray-700">Better</h1>
-                </div>
-            </div>
-            <div class="flex items-center gap-3 mt-4  text-gray-500 font-semibold text-[16px]">
-                <Check :size="20" fillColor="#ffffff" class=" border rounded-full   border-transparent bg-gray-400" />
-                <div>
-                    <h3>Supported devices</h3>
-                    <h1 class="text-gray-700">Mobile phone, tablet, Tv, computer</h1>
-                </div>
-            </div>
-        </div>
-        <div class="p-1 border border-gray-400 rounded-md w-1/6 h-[26rem]">
-            <div class=" bg-gradient-to-br from-[#3B409F] via-[#3F41A4] to-[#492b95] text-white font-bold p-2 rounded-md w-full h-1/5">
-                <h1 class="text-[20px]">Basic</h1>
-                <h1 class="text-[16px] font-normal">720p </h1>
-
-                <!-- <input type="checkbox" class="" name="" id=""> -->
-            </div>
-            <div class="flex items-center gap-3 mt-4 border-b pb-2 border-gray-300 text-gray-500 font-semibold text-[16px]">
-                <Check :size="20" fillColor="#ffffff" class=" border rounded-full   border-transparent bg-gray-400" />
-                <div>
-                    <h3>Monthly price</h3>
-                    <h1 class="text-gray-700">Rs450</h1>
-                </div>
-            </div>
-            <div class="flex items-center gap-3 mt-4 border-b pb-2 border-gray-300 text-gray-500 font-semibold text-[16px]">
-                <Check :size="20" fillColor="#ffffff" class=" border rounded-full   border-transparent bg-gray-400" />
-                <div>
-                    <h3>Resolution</h3>
-                    <h1 class="text-gray-700">720p (HD)</h1>
-                </div>
-            </div>
-            <div class="flex items-center gap-3 mt-4 border-b pb-2 border-gray-300 text-gray-500 font-semibold text-[16px]">
-                <Check :size="20" fillColor="#ffffff" class=" border rounded-full   border-transparent bg-gray-400" />
-                <div>
-                    <h3>Video quality</h3>
-                    <h1 class="text-gray-700">Good</h1>
-                </div>
-            </div>
-            <div class="flex items-center gap-3 mt-4  text-gray-500 font-semibold text-[16px]">
-                <Check :size="20" fillColor="#ffffff" class=" border rounded-full   border-transparent bg-gray-400" />
-                <div>
-                    <h3>Supported devices</h3>
-                    <h1 class="text-gray-700">Mobile phone, tablet, Tv, computer</h1>
-                </div>
-            </div>
-        </div>
-        <div class=" p-1 border border-gray-400 rounded-md w-1/6 h-[26rem]">
-            <div class="bg-gradient-to-br from-[#3B409F] via-[#3F41A4] to-[#855AEE] text-white font-bold p-2 rounded-md w-full h-1/5">
-                <h1 class="text-[20px]">Mobile</h1>
-                <h1 class="text-[16px] font-normal">480p</h1>
-                <!-- <input type="checkbox" class="" name="" id=""> -->
-            </div>
-            <div class="flex items-center gap-3 mt-4 border-b pb-2 border-gray-300 text-gray-500 font-semibold text-[16px]">
-                <Check :size="20" fillColor="#ffffff" class=" border rounded-full   border-transparent bg-gray-400" />
-                <div>
-                    <h3>Monthly price</h3>
-                    <h1 class="text-gray-700">Rs250</h1>
-                </div>
-            </div>
-            <div class="flex items-center gap-3 mt-4 border-b pb-2 border-gray-300 text-gray-500 font-semibold text-[16px]">
-                <Check :size="20" fillColor="#ffffff" class=" border rounded-full   border-transparent bg-gray-400" />
-                <div>
-                    <h3>Resolution</h3>
-                    <h1 class="text-gray-700">480p</h1>
-                </div>
-            </div>
-            <div class="flex items-center gap-3 mt-4 border-b pb-2 border-gray-300 text-gray-500 font-semibold text-[16px]">
-                <Check :size="20" fillColor="#ffffff" class=" border rounded-full   border-transparent bg-gray-400" />
-                <div>
-                    <h3>Video quality</h3>
-                    <h1 class="text-gray-700">Good</h1>
-                </div>
-            </div>
-            <div class="flex items-center gap-3 mt-4  text-gray-500 font-semibold text-[16px]">
-                <Check :size="20" fillColor="#ffffff" class=" border rounded-full   border-transparent bg-gray-400" />
-                <div>
-                    <h3>Supported devices</h3>
-                    <h1 class="text-gray-700">Mobile phone, tablet</h1>
-                </div>
-            </div>
-        </div>
-
-
-       </div>
+    </div>
     </div>
 </template>

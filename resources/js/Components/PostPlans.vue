@@ -16,18 +16,11 @@ const closeOverlay = () => {
     emit("close");
 };
 
-// Initialize form using useForm from Inertia
-// const form = useForm({
-//     name: '',
-//     release_date: '',
-//     description: '',
-//     // category: '',
-//   file: null,
-// });
 
 const plan_type = ref("");
 const monthly_price = ref("");
 const resolution = ref("");
+const video_quality = ref("");
 const supported_devices = ref("");
 
 
@@ -38,18 +31,21 @@ const submit = async () => {
         formData.append("plan_type", plan_type.value);
         formData.append("monthly_price", monthly_price.value);
         formData.append("resolution", resolution.value);
-        formData.append("supported_devices", supported_devices.value);
+        formData.append("video_quality", video_quality.value);
+
+        const devicesArray = supported_devices.value.split(",").map(devices => devices.trim());
+        formData.append("supported_devices", JSON.stringify(devicesArray));
 
         // Send the formData using Axios
-        const response = await axios.post("/api/posts", formData, {
+        const response = await axios.post("/api/plans", formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
         });
 
-        console.log("Post added successfully");
+        console.log("Plan added successfully");
     } catch (error) {
-        console.error("Error adding post:", error.response.data);
+        console.error("Error adding plan:", error.response.data);
     }
 };
 
@@ -79,10 +75,10 @@ const submit = async () => {
                         id="plan_type"
                         type="text"
                         class="mt-1 block px-14 py-4 w-full bg-black rounded-none placeholder-opacity-25"
-                        v-model="name"
+                        v-model="plan_type"
                         required
                         autofocus
-                        placeholder="Montyly price"
+                        placeholder="Plan type"
                     />
                     <!-- <InputError class="mt-2" :message="errors.name" /> -->
                 </div>
@@ -93,9 +89,9 @@ const submit = async () => {
                         id="monthly_price"
                         type="text"
                         class="mt-1 block px-14 py-4 w-full bg-black rounded-none placeholder-opacity-25"
-                        v-model="release_date"
+                        v-model="monthly_price"
                         required
-                        placeholder="Resolution"
+                        placeholder="Monthly price"
                     />
                     <!-- <InputError class="mt-2" :message="errors.release_date" /> -->
                 </div>
@@ -105,7 +101,17 @@ const submit = async () => {
                     <TextInput
                         id="resolution"
                         class="mt-1 block w-full px-14 py-4 border border-white placeholder-text-left bg-black bg-opacity-25"
-                        v-model="description"
+                        v-model="resolution"
+                        required
+                        placeholder="Resolution"
+                    />
+                    <!-- <InputError class="mt-2" :message="errors.description" /> -->
+                </div>
+                <div class="mt-4">
+                    <TextInput
+                        id="video_quality"
+                        class="mt-1 block w-full px-14 py-4 border border-white placeholder-text-left bg-black bg-opacity-25"
+                        v-model="video_quality"
                         required
                         placeholder="Video quality"
                     />
@@ -116,7 +122,7 @@ const submit = async () => {
                     <input
                         id="supported_devices"
                         class="mt-1 block w-full px-14 py-4 border border-white placeholder-text-left bg-black bg-opacity-25"
-                        v-model="description"
+                        v-model="supported_devices"
                         required
                         placeholder="Supported devices"
                     />

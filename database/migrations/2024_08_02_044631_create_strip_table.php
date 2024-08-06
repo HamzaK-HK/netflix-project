@@ -11,15 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('plans', function (Blueprint $table) {
+        Schema::create('strip', function (Blueprint $table) {
             $table->id();
-            // $table->unsignedBigInteger('user_id');
-            // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('plan_type');
             $table->string('monthly_price');
-            $table->string('resolution');
-            $table->string('video_quality');
-            $table->string('supported_devices');
             $table->timestamps();
         });
     }
@@ -29,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('plans');
+        Schema::dropIfExists('strip');
     }
 };

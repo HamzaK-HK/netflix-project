@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         {{-- Uncomment this line if you need CSRF protection for your JavaScript apps --}}
-        {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>Netflix</title>
         <!-- The 'icons' attribute is not valid for <link> tags, so it should be removed or corrected if it's meant to link to an icon -->
@@ -19,6 +19,7 @@
     </head>
     <body class="font-sans">
         <div id="app"></div>
+        {{-- <script src="https://js.stripe.com/v3/"></script> --}}
     </body>
 </html>
 

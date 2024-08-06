@@ -33,7 +33,7 @@ class RegisteredUserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            // 'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
@@ -45,8 +45,9 @@ class RegisteredUserController extends Controller
         // $file_path = $file->store('images','public');
 
         $user = User::create([
-            // 'name' => $request->name,
+            'name' => $request->name,
             'email' => $request->email,
+            'subscription' => false,
             'password' => Hash::make($request->password),
             'admin' => false,
             // 'picture' => $file_path

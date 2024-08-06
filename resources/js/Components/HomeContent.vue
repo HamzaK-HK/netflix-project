@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import axios from "axios";
 
 // Import Components and Icons
@@ -62,14 +62,26 @@ const toggleShowImage = (video) => {
 };
 
 // Function to handle mouse enter on video
-const handleMouseEnter = (videoId) => {
-    hoveredVideoId.value = videoId;
-};
+// const hoveredVideoId = ref(null);
+    const videoRefs = ref([]);
 
-// Function to handle mouse leave from video
-const handleMouseLeave = () => {
-    hoveredVideoId.value = null;
-};
+    const handleMouseEnter = (index) => {
+      hoveredVideoId.value = index;
+      const video = videoRefs.value[index];
+      if (video) {
+        video.play();
+      }
+    };
+
+    const handleMouseLeave = (index) => {
+      hoveredVideoId.value = null;
+      const video = videoRefs.value[index];
+      if (video) {
+        video.pause();
+      }
+    };
+
+
 
 const addToMyList = async (videoId) => {
     try {
@@ -80,15 +92,18 @@ const addToMyList = async (videoId) => {
     }
 };
 
+watch(() => videos.value, () => {
+      // Update videoRefs if videos change dynamically
+      videoRefs.value = [];
+    });
 
 
 
-
-    const items = ref([
-      { image: 'image.jpg', title: 'Item 1' },
-      { image: 'image2.jpg', title: 'Item 2' },
-      // Add more items as needed
-    ]);
+    // const items = ref([
+    //   { image: 'image.jpg', title: 'Item 1' },
+    //   { image: 'image2.jpg', title: 'Item 2' },
+    //   // Add more items as needed
+    // ]);
 
     const activeIndex = ref(null);
     // const hoveredVideoId = ref(null);
@@ -114,7 +129,7 @@ const addToMyList = async (videoId) => {
         };
       }
       return {
-        transform: 'scale(1)',
+        transform: 'scale(100%)',
       };
     };
 
@@ -134,147 +149,78 @@ const addToMyList = async (videoId) => {
         <div class="bg-[#141414] ml-14 h-auto pb-40">
             <div class="">
                 <Carousel
-                    v-if="videos.length > 0"
-                    :items-to-show="5"
-                    :items-to-scroll="3"
-                    class="bg-transparent pb-4"
-                    wrap-around
-                    transition="500"
-                    snapAlign="start"
-                    width="300"
-                >
-                    <Slide
-                        v-for="video in videos"
-                        :key="video.id"
-                        class="cursor-pointer relative"
-                    >
-                        <div
-                            class="w-full"
-                            @mouseenter="handleMouseEnter(video.id)"
-                            @mouseleave="handleMouseLeave"
-                        >
-                            <!-- Video Element -->
-                            <video
-                                v-if="!video.showImage"
-                                class="w-64 h-36 rounded-sm cursor-pointer"
-                                muted
-                                preload="auto"
-                                loop
-                                @click="openModal(video)"
-                            >
-                                <source
-                                    :src="`storage/${video.file}`"
-                                    type="video/mp4"
-                                />
-                                Your browser does not support the video tag.
-                            </video>
-
-                            <!-- Image Thumbnail -->
-                            <img
-                                v-else
-                                :src="`/images/img${video.id}.jpg`"
-                                alt="Video thumbnail"
-                                class="w-64 h-36 rounded-sm object-cover cursor-pointer"
-                                @click="openModal(video)"
-                            />
-
-                            <!-- Hover Icons -->
-
-
-
-                            <div>
-    <div v-if="hoveredVideoId === video.id" class="absolute top-0 bottom-20 bg-[#141414] z-20 w-full h-screen">
-      <div class="flex flex-col justify-center">
-        <video
-          :class="[
-            'w-full h-64 rounded-t-lg rounded-l-lg rounded-r-lg cursor-pointer transition-all duration-300 ease-in-out',
-            {
-              'transform scale-125': hoveredVideoId === video.id,
-            },
-          ]"
-          muted
-          preload="auto"
-          loop
-          :autoplay="hoveredVideoId === video.id"
-          @click="openModal(video)"
+          v-if="videos.length > 0"
+          :items-to-show="5"
+          :items-to-scroll="3"
+          class="bg-transparent pb-4"
+          wrap-around
+          transition="500"
+          snapAlign="start"
+          width="300"
         >
-          <source :src="`storage/${video.file}`" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-        <div class="flex items-center space-x-3">
-          <button class="cursor-pointer">
-            <PlayCircleOutline fillColor="#FFFFFF" :size="42" />
-          </button>
-          <button class="cursor-pointer">
-            <ThumbUpOutline fillColor="#FFFFFF" :size="42" />
-          </button>
-          <button @click="addToMyList(video.id)" class="cursor-pointer">
-            <PlusCircleOutline fillColor="#FFFFFF" :size="42" />
-          </button>
-          <button class="cursor-pointer">
-            <ChevronDownCircleOutline fillColor="#FFFFFF" :size="42" />
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- <main class="relative block w-screen h-screen p-[4vw] overflow-x-hidden">
-      <div class="logo absolute top-0 left-0 w-full h-auto p-[3vw_4vw] bg-[rgba(255,255,255,0.02)]">
-        <svg class="relative block w-[10vw]">
-          <path class="fill-[#E50914]"></path>
-        </svg>
-      </div>
-      <section class="relative block top-[8vw] mb-[6vw]">
-        <h2 class="block w-full text-[1.2vw] font-semibold mb-[.8vw] ml-1">Section Title</h2>
-        <ul class="relative block w-full h-auto whitespace-nowrap text-0">
-          <li
-            v-for="(item, index) in items"
-            :key="index"
-            @mouseover="handleMouseOver(index)"
-            @mouseout="handleMouseOut"
-            class="inline-block h-auto p-1 overflow-hidden cursor-pointer transition-all duration-500 ease-[.2s] first:origin-[0_center] last:origin-[100%_center]"
-            :class="{ hover: activeIndex === index }"
-            :style="hoverStyle(index)"
+          <Slide
+            v-for="(video, index) in videos"
+            :key="video.id"
+            class="cursor-pointer relative"
           >
-            <div class="relative block w-full h-0 pt-[56.25%] bg-cover origin-[top_right]">
-              <div
-                class="absolute top-[-10px] left-[-10px] z-10 w-[calc(100%+20px)] h-[calc(100%+20px)] opacity-0 bg-gradient-to-b from-transparent to-black transition-all duration-500 ease-[.2s]"
-                :class="{ 'opacity-100': activeIndex === index }"
-              ></div>
-              <img
-                :src="item.image"
-                alt="image"
-                class="absolute top-0 left-0 w-full opacity-0 transition-opacity duration-500 ease-[.2s]"
-                :class="{ 'opacity-100': activeIndex === index }"
-              />
-            </div>
             <div
-              class="absolute bottom-0 left-0 z-10 w-full h-auto p-2.5 text-shadow-sm opacity-0 transition-opacity duration-500 ease-[.2s]"
-              :class="{ 'opacity-100': activeIndex === index }"
+              class="w-full"
+              @mouseenter="handleMouseEnter(index)"
+              @mouseleave="handleMouseLeave(index)"
             >
-              <h3 class="block w-full text-[.7vw] font-semibold mb-[.3vw]">{{ item.title }}</h3>
-              <div class="block w-full mb-[.3vw] text-0">
-                <span class="inline-block w-auto text-[.5vw] font-semibold mr-[.4vw] text-[#46D369]">Match %</span>
-                <span
-                  class="inline-block relative w-auto text-[.5vw] p-[0_0.4em] mr-[.4vw] border border-[rgba(255,255,255,0.4)]"
-                >
-                  Age
-                </span>
-                <span class="inline-block w-auto text-[.5vw]">Duration</span>
-              </div>
-              <div class="block w-full">
-                <span
-                  class="inline-block w-auto text-[.5vw] mr-[.3vw] after:content-['●'] after:inline-block after:ml-[.3vw] after:text-[.8vw] after:text-shadow-sm after:text-[rgba(255,255,255,0.4)]"
-                >
-                  Tag
-                </span>
+              <!-- Video Element -->
+              <video
+                v-if="!video.showImage"
+                :class="[
+                  'w-64 h-36 rounded-sm cursor-pointer transform  transition duration-300 ease-in-out',
+                  {
+                    'scale-105 z-50': hoveredVideoId === index,
+                  },
+                ]"
+                muted
+                preload="auto"
+                loop
+                :autoplay="hoveredVideoId === index"
+                @click="openModal(video)"
+              >
+                <source
+                  :src="`storage/${video.file}`"
+                  type="video/mp4"
+                />
+                Your browser does not support the video tag.
+              </video>
+
+              <!-- Image Thumbnail -->
+              <img
+                v-else
+                :src="`/images/img${video.id}.jpg`"
+                alt="Video thumbnail"
+                class="w-64 h-36 rounded-sm object-cover cursor-pointer"
+                @click="openModal(video)"
+              />
+
+              <!-- Hover Icons -->
+              <div v-if="hoveredVideoId === index" class="flex items-center justify-center space-x-3 mt-2">
+                <button class="cursor-pointer">
+                  <PlayCircleOutline @click="openModal(video)" fillColor="#FFFFFF" :size="42" />
+                </button>
+                <button class="cursor-pointer">
+                  <ThumbUpOutline fillColor="#FFFFFF" :size="42" />
+                </button>
+                <button @click="addToMyList(video.id)" class="cursor-pointer">
+                  <PlusCircleOutline fillColor="#FFFFFF" :size="42" />
+                </button>
+                <button class="cursor-pointer">
+                  <ChevronDownCircleOutline fillColor="#FFFFFF" :size="42" />
+                </button>
               </div>
             </div>
-          </li>
-        </ul>
-      </section>
-    </main> -->
-  </div>
+          </Slide>
+
+          <template #addons>
+            <Navigation />
+          </template>
+        </Carousel>
 
 
 
@@ -342,17 +288,12 @@ const addToMyList = async (videoId) => {
                             </div> -->
 
 
+                            </div>
 
 
 
 
-                        </div>
-                    </Slide>
-                    <template #addons>
-                        <Navigation />
-                    </template>
-                </Carousel>
-            </div>
+                \
 
             <!-- Video Modal -->
             <div
@@ -451,4 +392,7 @@ const addToMyList = async (videoId) => {
     transform: scale(1.25);
     transition: transform 0.3s ease-in-out;
 }
+
+
+
 </style>

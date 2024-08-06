@@ -2,8 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\MyListController;
+use App\Http\Controllers\StripeController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\API\SessionController;
 use App\Http\Controllers\API\RegisteredController;
@@ -46,7 +49,24 @@ Route::get('/api/getmylist', [MyListController::class, 'getmylist'])->name('getm
 
 
 // post plan
-Route::post('/')
+Route::post('/api/plans', [PlanController::class, 'store'])->name('plans.store');
+Route::get('/api/getplans', [PlanController::class, 'getplans'])->name('getplans');
+
+
+
+Route::post('/api/create-payment-intent', [StripeController::class, 'createPaymentIntent']);
+
+Route::get('/api/getplansdetails', [StripeController::class, 'getplans'])->name('getplans');
+
+
+Route::post('/webhooks/stripe', [StripeController::class, 'get']);
+
+
+
+Route::post('/payments', [PaymentController::class, 'store'])->name('payment.store');
+
+Route::get('/api/getproduct/{priceId}', [PaymentController::class, 'getProduct'])->name('getproduct');
+
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

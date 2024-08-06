@@ -18,9 +18,15 @@ class PlanController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function getplans()
+    
     {
-        //
+        $plans = Plan::all();
+        foreach ($plans as $plan) {
+            $plan->supported_devices = json_decode($plan->supported_devices);
+        }
+
+        return response()->json(['plans' => $plans]);
     }
 
     /**
@@ -34,10 +40,15 @@ class PlanController extends Controller
             'plan_type' => 'required',
             'monthly_price' => 'required',
             'resolution' => 'required',
-            'supported_devices' => 'required',
+            'video_quality' => 'required',
+            'supported_devices' => 'required|string',
         ]);
 
-        $plan->create($data);
+        // $data['supported_devices'] = json_decode($request->supported_devices);
+
+        $plan = Plan::create($data);
+
+        return response()->json(['message' => 'Plan created successfully', 'plan' => $plan]);
     }
 
     /**
