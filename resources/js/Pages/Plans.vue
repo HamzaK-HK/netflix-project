@@ -99,7 +99,7 @@ const navigateToPlan = (planId) => {
         <div
             v-for="plan in plans"
             :key="plan.id"
-            class="p-1 border border-gray-400 rounded-md w-1/6 h-auto pb-8 cursor-pointer transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-2xl"
+            class="p-1 border border-gray-400 rounded-md w-1/6 h-auto pb-8 cursor-pointer transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-gray-900 hover:shadow-xl"
             @click="navigateToPlan(plan.plan_type)"
         >
             <div :class="[getPlanBackgroundClass(plan.plan_type), 'text-white font-semibold p-2 rounded-md w-full h-1/5']">

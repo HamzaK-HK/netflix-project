@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             // $table->string('charge_id');
-            // $table->string('plan_type');
+            $table->string('plan_type');
             $table->string('price');
             $table->integer('quantity');
             // $table->string('currency');

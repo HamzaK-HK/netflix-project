@@ -15,6 +15,7 @@ const publishableKey = ref(
 const loading = ref(false);
 const plans = ref([]);
 const lineItems = reactive([]);
+let planType = route.params.type;
 
 const getPlans = async () => {
     try {
@@ -27,28 +28,27 @@ const getPlans = async () => {
 
             //   for (const plan of plans.value) {
             let productId = "";
-            let plan_type = "";
 
-            switch (route.params.type) {
+            switch (planType) {
                 case "mobile":
                     productId = "price_1PjEJyLTANQhvXtFLoAvvUyU";
-                    plan_type = "Mobile";
+
                     break;
                 case "basic":
                     productId = "price_1PjEKQLTANQhvXtFHE4T1aEL";
-                    plan_type = "Basic";
+
                     break;
                 case "standard":
                     productId = "price_1PjEKlLTANQhvXtFmPYVM0w2";
-                    plan_type = "Standard";
+
                     break;
                 case "premium":
                     productId = "price_1PjEL5LTANQhvXtFk7Tgg7kK";
-                    plan_type = "Premium";
+
                     break;
                 default:
                     productId = "price_1PjEL5LTANQhvXtFk7Tgg7kK";
-                    plan_type = "Premium";
+
             }
             if (productId) {
                 lineItems.push({
@@ -56,7 +56,9 @@ const getPlans = async () => {
                     quantity: 1,
                 });
 
-                submit();
+
+
+           await submit(productId);
             }
         } else {
             console.error("Plans data is not an array", plans.value);
@@ -66,25 +68,45 @@ const getPlans = async () => {
     }
 };
 
+
+const storePlanType = async () => {
+      try {
+        const response = await axios.post('/api/postpayment', {
+          type: planType,
+          lineItems: lineItems,   // Replace with actual quantity
+        });
+        console.log(response);
+      } catch (error) {
+        console.error('Failed to store plan type', error);
+      }
+    };
+
+
+
+
 onMounted(() => {
     getPlans();
+
 });
 
-const successUrl = `http://127.0.0.1:8000/payments`;
-const cancelUrl = `${window.location.origin}/home`;
+    const successUrl = `http://127.0.0.1:8000/payment?type=${planType}`;
+    const cancelUrl = 'http://127.0.0.1:8000/payment';
 
-const submit = async () => {
+    const submit = async (productId) => {
     try {
+        console.log('Initiating redirect to Stripe Checkout...');
         const { error } = await checkoutRef.value.redirectToCheckout({
-            successUrl: successUrl,
-            cancelUrl: cancelUrl,
+            successUrl,
+            cancelUrl
         });
+
         if (error) {
             console.error("Stripe Checkout error:", error);
         }
     } catch (error) {
-        console.error("Failed to redirect to Stripe Checkout:", error);
+        console.error("Failed to handle the payment process:", error);
     }
+    storePlanType();
 };
 
 const checkoutRef = ref(null);
@@ -96,7 +118,7 @@ const checkoutRef = ref(null);
             ref="checkoutRef"
             mode="subscription"
             :pk="publishableKey"
-            success-url="http://127.0.0.1:8000/home"
+            :success-url="successUrl"
             :cancel-url="cancelURL"
             :line-items="lineItems"
             @loading="(v) => (loading = v)"

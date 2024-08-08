@@ -15,7 +15,7 @@ class StripeController extends Controller
 {
     public function createPaymentIntent(Request $request)
     {
-        Stripe::setApiKey(env('sk_test_51PiVn4LTANQhvXtF9W7NbfaO1aaU2vgsFyFVGcfW2vHU04W99Ll7I6MtYYOoTvJdQdT3SY3eLSbIu5DkhUSyXhIw00doAkuWht'));
+        Stripe::setApiKey('sk_test_51PiVn4LTANQhvXtF9W7NbfaO1aaU2vgsFyFVGcfW2vHU04W99Ll7I6MtYYOoTvJdQdT3SY3eLSbIu5DkhUSyXhIw00doAkuWht');
 
     // Fetch the plan data from the Plan table
     $plan = Plan::find($request->input('plan_id'));

@@ -13,6 +13,7 @@ import MyList from '../Pages/MyList.vue';
 import Account from '../Pages/Account.vue'
 import Plans from '../Pages/Plans.vue'
 import Stripe from '../Pages/Stripe.vue'
+import Payments from '../Pages/Payments.vue'
 
 
 const routes = [
@@ -70,12 +71,12 @@ const routes = [
     path: '/stripe/:type',
     name: 'Stripe',
     component: Stripe,
-  }
-//   {
-//     path: '/about',
-//     name: 'About',
-//     component: About,
-//   },
+  },
+  {
+    path: '/payment',
+    name: 'Payments',
+    component: Payments,
+  },
   // Add more routes here
 ];
 

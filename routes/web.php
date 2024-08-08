@@ -59,13 +59,21 @@ Route::post('/api/create-payment-intent', [StripeController::class, 'createPayme
 Route::get('/api/getplansdetails', [StripeController::class, 'getplans'])->name('getplans');
 
 
-Route::post('/webhooks/stripe', [StripeController::class, 'get']);
+// Route::post('/webhooks/stripe', [StripeController::class, 'get']);
 
 
 
-Route::post('/payments', [PaymentController::class, 'store'])->name('payment.store');
+Route::get('/api/payments', [PaymentController::class, 'store'])->name('payment.store');
+
+Route::post('/api/postpayment', [PaymentController::class, 'postPayment'])->name('getpayment');
+
+// routes/web.php
+Route::post('/stripe/webhook', [PaymentController::class, 'handleWebhook']);
+
+
 
 Route::get('/api/getproduct/{priceId}', [PaymentController::class, 'getProduct'])->name('getproduct');
+
 
 
 
